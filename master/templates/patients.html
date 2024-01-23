@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block body %}
+<div class="flex flex-col lg:flex-row">
+    <!-- Form Section -->
+    <div class="lg:w-1/3 ">
+        <form action="" method="post" class="bg-white shadow-md rounded px-8 pb-8 m-2">
+            <h3 class="self-center text-xl mb-6 font-semibold whitespace-nowrap dark:text-white text-blue-700">
+                Add Patient form</h3>
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="firstname">
+                    Frist name
+                </label>
+                <input name="firstname"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="firstname" type="text" placeholder="Jhon">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="lastname">
+                    Last name
+                </label>
+                <input name="lastname"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="lastname" type="text" placeholder="Doe">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="mobile">
+                    Mobile
+                </label>
+                <input name="mobile"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="mobile" type="text" placeholder="(+1) 765 8798 345">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="doctor">
+                    Select Doctor
+                </label>
+                <div class="relative">
+                    <select name="doctor"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="doctor">
+                        <option value="" disabled selected>Select a Doctor...</option>
+                        {% for doctor in doctors %}
+                        <option value="{{doctor.id}}">{{doctor.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <i class="fa fa-chevron-circle-down absolute top-0 right-0 mt-2 mr-3 text-gray-600"
+                        aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="report_type">
+                    Select Report
+                </label>
+                <div class="relative">
+                    <select name="report_type"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="report_type">
+                        <option value="" disabled selected>Select a Report...</option>
+                        {% for report in reports %}
+                        <option value="{{report.id}}">{{report.name}}</option>
+                        {% endfor %}
+
+                    </select>
+                    <i class="fa fa-chevron-circle-down absolute top-0 right-0 mt-2 mr-3 text-gray-600"
+                        aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="address">
+                    Address
+                </label>
+                <textarea name="address"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="address" placeholder="Type your address here..."></textarea>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Register
+                </button>
+                <!-- <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
+            Forgot Password?
+          </a> -->
+            </div>
+        </form>
+    </div>
+    <!-- Parties Details Section -->
+    <div class="lg:w-2/3 ">
+        <!-- component -->
+        <section class="text-gray-600 m-2 ">
+            <div class="flex flex-col justify-center ">
+                <!-- Table -->
+                <header class="px-5 py-2 border-b border-gray-100">
+                    <h2
+                        class="self-center text-center text-xl font-semibold whitespace-nowrap dark:text-white text-blue-700">
+                        {{humanize|title}} Patients List</h2>
+                </header>
+                <header class="pl-1 py-2 border-b border-gray-100 flex justify-between">
+                    <h2 class="text-xs text-blue-700">
+                        Payment status : 
+                        <span><i class="fa fa-circle-o text-red-500" aria-hidden="true"> &nbsp; Pending</i></span>
+                        <span><i class="fa fa-adjust text-yellow-500 ml-2" aria-hidden="true"> &nbsp; Partially</i></span>
+                        <span><i class="fa fa-circle text-green-500 ml-2" aria-hidden="true"> &nbsp; Done</i></span>
+                    </h2>
+                    <h2 class="text-xs text-blue-700 font-bold">Date : {{current_time}}</h2>
+                </header>
+                <div class="w-full bg-white border border-gray-200 shadow-md rounded h-screen overflow-y-scroll"
+                    style="height: 98.5vh;">
+
+                    <div class="p-3">
+                        <div class="overflow-x-auto">
+                            <table class="table-auto w-full">
+                                <thead class="text-xs font-semibold uppercase text-gray-700 bg-gray-50">
+                                    <tr>
+                                        <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Name</div>
+                                        </th>
+                                        <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Doctor & Report Type</div>
+                                        </th>
+                                        <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Payment</div>
+                                        </th>
+                                        <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Action</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm divide-y divide-gray-100">
+                                    {% if today_patients|length == 0 %}
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <td colspan="6" class="px-6 py-4 text-center text-xl">
+                                            No patients available.
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    {% for patient in today_patients %}
+                                    <tr>
+                                        <td class="p-2 whitespace-nowrap ">
+                                            <div class="flex items-center">
+                                                <!-- <div class="w-10 h-10 flex-shrink-0">
+                                                    <img class="rounded-full"
+                                                        src="https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg"
+                                                        alt="Alex Shatov">
+                                                </div> -->
+                                                <div class="flex items-center gap-3">
+                                                    <div class="flex flex-col">
+                                                        <p
+                                                            class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                                            {{patient.first_name}} {{patient.last_name}}</p>
+                                                        <p
+                                                            class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal opacity-70">
+                                                            {{patient.mobile}}</p>
+                                                    </div>
+                                                </div>
+
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div class="flex flex-col">
+                                                    <p
+                                                        class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                                        {{patient.doctor_id}}
+                                                    </p>
+                                                    <p
+                                                        class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal opacity-70">
+
+                                                        {{patient.report_type}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap">
+                                            {% if patient.payment_status == 'Pending' %}
+                                            <div class="text-left font-medium text-red-500">
+                                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                            </div>
+                                            {% elif patient.payment_status == 'Partially' %}
+                                            <div class="text-left font-medium text-yellow-500">
+                                                <i class="fa fa-adjust" aria-hidden="true"></i>
+
+                                            </div>
+                                            {% elif patient.payment_status == 'Done' %}
+                                            <div class="text-left font-medium text-green-500">
+                                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                            </div>
+                                            {% endif %}
+
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap ">
+                                            <div class="flex">
+                                                <a href="{% url 'patient_account' patient_id=patient.id %}"
+                                                    class="text-orange-500"><i class="fa fa-inr mr-2" style="font-size: 20px;"
+                                                        aria-hidden="true"></i></a>
+                                                |
+                                                <a href="{% url 'patient_update' patient_id=patient.id %}"
+                                                    class="text-blue-500"><i class="fa fa-pencil-square-o mx-2" style="font-size: 20px;"
+                                                        aria-hidden="true"></i></a>
+                                                |
+                                                <a href="{% url 'patient_delete' patient_id=patient.id %}"
+                                                    class="text-red-500"><i class="fa fa-trash ml-2" style="font-size: 20px;"
+                                                        aria-hidden="true"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endif %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div class="flex flex-col lg:flex-row">
+    <div class="lg:w-full overflow-x-scroll">
+        <!-- component -->
+        <section class=" text-gray-600 m-2 ">
+            <div class="flex flex-col justify-center ">
+                <!-- Table -->
+                <div class="w-full bg-white border border-gray-200 shadow-md rounded">
+                    <header class="px-5 py-2 border-b border-gray-100">
+                        <h2
+                            class="self-center text-center text-xl font-semibold whitespace-nowrap dark:text-white text-blue-700">
+                            Patients List</h2>
+                    </header>
+                    <div class="p-3">
+                        <div class="overflow-x-auto">
+                            <table class="table-auto w-full">
+                                <thead class="text-xs font-semibold uppercase text-gray-700 bg-gray-50">
+                                    <tr>
+                                        <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Name</div>
+                                        </th>
+                                        <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Doctor & Report Type</div>
+                                        </th>
+                                        <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Payment</div>
+                                        </th>
+                                        <th class="p-2 whitespace-nowrap">
+                                            <div class="font-semibold text-left">Action</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm divide-y divide-gray-100">
+                                    {% if patients|length == 0 %}
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <td colspan="6" class="px-6 py-4 text-center text-xl">
+                                            No patients available.
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    {% for patient in patients %}
+                                    <tr>
+                                        <td class="p-2 whitespace-nowrap ">
+                                            <div class="flex items-center">
+                                                <!-- <div class="w-10 h-10 flex-shrink-0">
+                                                    <img class="rounded-full"
+                                                        src="https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg"
+                                                        alt="Alex Shatov">
+                                                </div> -->
+                                                <div class="flex items-center gap-3">
+                                                    <div class="flex flex-col">
+                                                        <p
+                                                            class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                                            {{patient.first_name}} {{patient.last_name}}</p>
+                                                        <p
+                                                            class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal opacity-70">
+                                                            {{patient.mobile}}</p>
+                                                    </div>
+                                                </div>
+
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <div class="flex flex-col">
+                                                    <p
+                                                        class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                                        {{patient.doctor_id}}
+                                                    </p>
+                                                    <p
+                                                        class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal opacity-70">
+
+                                                        {{patient.report_type}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap">
+                                            {% if patient.payment_status == 'Pending' %}
+                                            <div class="text-left font-medium text-red-500">
+                                                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                {{patient.payment_status}}
+                                            </div>
+                                            {% elif patient.payment_status == 'Partially' %}
+                                            <div class="text-left font-medium text-yellow-500">
+                                                <i class="fa fa-adjust" aria-hidden="true"></i>
+                                                {{patient.payment_status}}
+                                            </div>
+                                            {% elif patient.payment_status == 'Done' %}
+                                            <div class="text-left font-medium text-green-500">
+                                                <i class="fa fa-circle" aria-hidden="true"></i>
+                                                {{patient.payment_status}}
+                                            </div>
+                                            {% endif %}
+
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap ">
+                                            <div class="flex">
+                                                <a href="{% url 'patient_account' patient_id=patient.id %}"
+                                                    class="text-orange-500"><i class="fa fa-inr fa-2x mr-2"
+                                                        aria-hidden="true"></i></a>
+                                                |
+                                                <a href="{% url 'patient_update' patient_id=patient.id %}"
+                                                    class="text-blue-500"><i class="fa fa-pencil-square-o fa-2x mx-2"
+                                                        aria-hidden="true"></i></a>
+                                                |
+                                                <a href="{% url 'patient_delete' patient_id=patient.id %}"
+                                                    class="text-red-500"><i class="fa fa-trash fa-2x ml-2"
+                                                        aria-hidden="true"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endif %}
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

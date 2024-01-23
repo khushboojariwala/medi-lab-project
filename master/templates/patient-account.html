@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block title %}
+Patient-Account-Page
+{% endblock %}
+
+{% block body %}
+
+<div class="flex flex-col lg:flex-row justify-center">
+    <!-- Form Section -->
+    <div class="lg:w-2/3 ">
+        <form action="" method="post" class="bg-white shadow-md rounded px-8 pb-8 m-2">
+            <h3 class="self-center text-xl mb-6 font-semibold whitespace-nowrap dark:text-white text-blue-700">
+                Patient Account : <span class="text-red-500">{{patient.first_name}} {{patient.last_name}}</span> </h3>
+            {% csrf_token %}
+
+
+            <div
+                class="w-fll text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white my-4">
+                <a
+                    class="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white justify-between">
+                    <span>Total Amount</span>
+                    <span><i class="fa fa-inr"></i> {{patient.total_amount}}</span>
+                </a>
+                <a
+                    class="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white justify-between">
+                    <span>Paid Amount</span>
+                    <span><i class="fa fa-inr"></i> {{patient.paid_amount}}</span>
+                    
+                </a>
+                <a
+                    class="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white justify-between">
+                    <span>Remaining Amount</span>
+                    <span><i class="fa fa-inr"></i> {{patient.remaining_amount}}</span>
+                    
+                </a>
+            </div>
+
+            {% if patient.remaining_amount != 0 %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="payment_installment">
+                    Payment Installment
+                </label>
+                <input name="payment_installment"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="payment_installment" type="number" placeholder="Rs. 500">
+            </div>
+            <div class="flex items-center justify-between">
+                <button
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Pay
+                </button>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+    
+</div>
+<div class="lg:w-2/3  bg-white border border-gray-200 shadow-md rounded my-5 mx-auto">
+    <header class="border-b border-gray-100">
+        <h2
+            class="self-center text-center text-xl font-semibold whitespace-nowrap dark:text-white text-blue-700">
+            Patients Paid History</h2>
+    </header>
+    <div class="p-3">
+        <div class="overflow-x-auto">
+            <table class="table-auto w-full">
+                <thead class="text-xs font-semibold uppercase text-gray-700 bg-gray-50">
+                    <tr>
+                        <th class="p-2 whitespace-nowrap">
+                            <div class="font-semibold text-left">Installment ID</div>
+                        </th>
+                        <th class="p-2 whitespace-nowrap">
+                            <div class="font-semibold text-left">Date</div>
+                        </th>
+                        <th class="p-2 whitespace-nowrap">
+                            <div class="font-semibold text-left">Payment</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm divide-y divide-gray-100">
+                    {% if entreis|length == 0 %}
+                    <tr class="bg-white dark:bg-gray-800">
+                        <td colspan="6" class="px-6 py-4 text-center text-xl">
+                            Payment Entry Not Available.
+                        </td>
+                    </tr>
+                    {% else %}
+                    {% for entry in entreis %}
+                    <tr>
+                        <td class="p-2 whitespace-nowrap ">
+                            <div class="flex items-center">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex flex-col">
+                                        <p
+                                            class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                            {{entry.payment_id}}</p>
+                                    </div>
+                                </div>
+
+                        </td>
+                        <td class="p-2 whitespace-nowrap">
+                            <div class="flex items-center gap-3">
+                                <div class="flex flex-col">
+                                    <p
+                                        class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                        {{entry.paid_date}}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-2 whitespace-nowrap">
+                            <div class="flex items-center gap-3">
+                                <div class="flex flex-col">
+                                    <p
+                                        class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                        {{entry.paid_payment}}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'dashboard/css/style.css' %}">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="wrapper d-flex align-items-stretch">
+        <nav id="sidebar">
+            <div class="custom-menu">
+                <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                    <i class="fa fa-bars"></i>
+                    <span class="sr-only">Toggle Menu</span>
+                </button>
+            </div>
+            <div class="p-4">
+                <h1><a href="index.html" class="logo">MEDI-CENTER <span>Best lab</span></a></h1>
+                <ul class="list-unstyled components mb-5">
+                    <li class="active">
+                        <a href="{% url 'dashboard_view' %}"><i class="fa fa-home mr-3" aria-hidden="true"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'doctors_view' %}"><i class="fa fa-user-md mr-3" aria-hidden="true"></i> &nbsp;Doctors</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'patients_view' %}"><i class="fa fa-bed mr-3" aria-hidden="true"></i> Patients</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-list mr-3" aria-hidden="true"></i> Tasks</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}"><i class="fa fa-sign-out mr-3" aria-hidden="true"></i> &nbsp;Logout</a>
+                    </li>
+                </ul>
+
+                <div class="mb-5 border border-white rounded p-2">
+                    <h3 class="h6 mb-3">{{request.session.first_name}} {{request.session.last_name}} [{{request.session.role}}]</h3>
+                    <h3 class="h6 mb-3">{{request.session.staff_id}}</h3>
+
+                </div>
+
+                <div class="footer">
+                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+                        is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                            target="_blank">Colorlib.com</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+
+            </div>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content" class="p-4 p-md-5 pt-5">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+
+
+
+    <script src="{% static 'dashboard/js/jquery.min.js' %}"></script>
+    <script src="{% static 'dashboard/js/popper.js' %}"></script>
+    <script src="{% static 'dashboard/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dashboard/js/main.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block body %}
+<div class="w-full flex justify-end">
+    <a href="#"  class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2 ml-auto" >
+        <i class="fa fa-plus" aria-hidden="true"></i> Add Doctors
+    </a>
+</div>
+
+
+
+
+<div class="lg:flex flex-wrap justify-center">
+    {% for doctor in doctors %}
+    <div class="lg:w-1.5/3 m-2">
+        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <a href="#">
+                <img class="rounded"
+                    src="{{ doctor.profile.url }}"
+                    alt="" />
+            </a>
+            <div class="p-2">
+                <a href="#">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{doctor.name|title}} <span class="bg-purple-200 text-purple-800 text-xs font-medium mx-2 me-2 px-2 py-1 rounded dark:bg-purple-900 dark:text-purple-300">{{doctor.degree|upper}}</span>
+                    </h5>
+                </a>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 ">{{doctor.summary}}</p>
+                <hr class="my-2">
+                <div class="my-2 flex justify-between">
+                    <div class="inline-flex items-center space-x-2">
+                        <div>
+                            <i class="fa fa-list-alt text-blue-500" aria-hidden="true"></i>
+                        </div>
+                        <div class="text-slate-500">Total Patient</div>
+                    </div>
+                    <div>
+                        <span class="bg-blue-200 text-blue-800 text-xs font-medium me-2 px-2 py-1 rounded dark:bg-blue-900 dark:text-blue-300">{{doctor.total_patient}}</span>
+                    </div>
+                </div>
+                <hr class="my-2">
+                <div class="my-2 flex justify-between">
+                    <div class="inline-flex items-center space-x-2">
+                        <div>
+                            <i class="fa fa-phone text-yellow-500" aria-hidden="true"></i>
+                        </div>
+                        <div class="text-slate-500">Contact</div>
+                    </div>
+                    <div>
+                        <span class="bg-yellow-200 text-yellow-800 text-xs font-medium me-2 px-2 py-1 rounded dark:bg-yellow-900 dark:text-yellow-300">{{doctor.contact}}</span>
+                    </div>
+                </div>
+                <hr class="my-2">
+                <div class="my-2">
+                    <div class="inline-flex items-center space-x-2">
+                        <div>
+                            <i class="fa fa-map-marker text-red-500" aria-hidden="true"></i>
+                        </div>
+                        <div class="text-slate-500">Address</div>
+                    </div>
+                    <div class="text-right">
+                        <span >- {{doctor.address}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
